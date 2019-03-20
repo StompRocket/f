@@ -1,0 +1,9 @@
+{
+  "name": "sr-fjs",
+  "version": "0.1.0",
+  "description": "functional frontend lib",
+  "main": "index.js",
+  "author": "swissChili",
+  "license": "MIT",
+  "private": false
+}
