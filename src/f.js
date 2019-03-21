@@ -1,4 +1,4 @@
-function render(element, htmlObject, handler, model) {
+export function render(element, htmlObject, handler, model) {
   function f(c) {
     render(element, htmlObject, handler, c)
   }
@@ -59,23 +59,22 @@ function attr(e) {
   }
 }
 
-const div   = elem('div')
-const a     = elem('a')
-const i     = elem('i')
-const b     = elem('b')
-const p     = elem('p')
-const span  = elem('span')
-const btn   = elem('button')
+export const div   = elem('div')
+export const a     = elem('a')
+export const i     = elem('i')
+export const b     = elem('b')
+export const p     = elem('p')
+export const span  = elem('span')
+export const btn   = elem('button')
 
-const classList = attr('class')
-const idList = attr('id')
+export const classList = attr('class')
+export const idList = attr('id')
 
-function onClick(event) {
+export function onClick(event) {
   return function(renderFactory, element, model, handler) {
     element.addEventListener("click", () => {
       let newmodel = handler(event, model)
-      if (newmodel !== model)
-        renderFactory(newmodel)
+      renderFactory(newmodel)
     })
     return element
   }

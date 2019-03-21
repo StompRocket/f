@@ -2,8 +2,15 @@
   "name": "sr-fjs",
   "version": "0.1.0",
   "description": "functional frontend lib",
-  "main": "index.js",
+  "main": "src/f.js",
   "author": "swissChili",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
 }
