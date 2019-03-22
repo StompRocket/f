@@ -1,3 +1,5 @@
+const debug = a => ''
+
 export function render(element, htmlObject, handler, model) {
   function f(c) {
     render(element, htmlObject, handler, c)
@@ -8,11 +10,11 @@ export function render(element, htmlObject, handler, model) {
 }
 
 function orStr(e) {
-  if (typeof e === 'string' || e instanceof String) {
-    return () => document.createTextNode(e)
+  if (typeof e !== 'function' || !(e instanceof Function)) {
+    return () => document.createTextNode(String(e))
   } else {
     return function(r, h, model) {
-      console.log("applying", Array.prototype.slice.call(arguments, 0))
+      debug("applying", Array.prototype.slice.call(arguments, 0))
       return e(r, h, model)
     }
   }
@@ -23,25 +25,28 @@ function elem(e) {
     var attrs = Array.prototype.slice.call(arguments, 0);
     return function() {
       var body = Array.prototype.slice.call(arguments, 0);
+      if (arguments[0] instanceof Array) {
+        body = arguments[0]
+      }
 
       return function(renderFactory, handler, model) {
-        console.log(body, attrs, model)
+        debug(body, attrs, model)
         let element = document.createElement(e)
-        console.log("about to apply handler")
-        console.log(handler('Event', model))
-        console.log("applied handler")
+        debug("about to apply handler")
+        debug(handler('Event', model))
+        debug("applied handler")
 
         body.forEach(el => {
-          console.log("El", el)
+          debug("El", el)
           let e = orStr(el)(renderFactory, handler, model)
-          console.log("Adding", e)
+          debug("Adding", e)
           element.appendChild(e)
         })
 
         attrs.forEach(a => {
           element = a(renderFactory, element, model, handler)
         })
-        console.log("Returning", element)
+        debug("Returning", element)
         return element
       }
 
@@ -52,7 +57,7 @@ function elem(e) {
 function attr(e) {
   return function(v) {
     return function(r, o, model, h) {
-      console.log("o =", o)
+      debug("o =", o)
       o.setAttribute(e, v)
       return o
     }
@@ -70,10 +75,10 @@ export const btn   = elem('button')
 export const classList = attr('class')
 export const idList = attr('id')
 
-export function onClick(event) {
+export function onClick(event, body) {
   return function(renderFactory, element, model, handler) {
     element.addEventListener("click", () => {
-      let newmodel = handler(event, model)
+      let newmodel = handler(event, model, body)
       renderFactory(newmodel)
     })
     return element

@@ -1,27 +1,39 @@
-import {div, b, btn, i, render, classList, onClick} from './f'
+import * as f from "./f"
+
+let product = (p, i) =>
+  f.div
+    ( f.classList("product") )
+    ( f.b () (p.name)
+    , f.p () (p.description)
+    , f.btn
+      ( f.onClick('RemoveProduct', i) )
+      ( "Remove" ) )
 
 let view = model =>
-  div
-    ( classList('some_class') )
-    ( b ()
-      ( model.boldText )
-    , btn
-      ( onClick('Clicked') )
-      ( model.btnText )
-    , i ()
-      ( model.clicked + " time" + (model.clicked === 1 ? "" : "s") )
-    )
+  f.div
+    ()
+    ( f.btn 
+      ( f.onClick('AddProduct') )
+      ( "Add Product" )
+    , f.div
+      ()
+      ( model.products.map( (p, i) => product(p, i)) ) )
 
-let update = (e, model) => {
-  if (e === 'Clicked') {
-    model.boldText = "Clicked"
-    model.clicked++
+let update = (e, m, body) => {
+  if (e == 'AddProduct') {
+    m.products.push(
+      {
+        name: "Product " + ++m.number,
+        description: "Product Description"
+      }
+    )
+  } else if (e == 'RemoveProduct') {
+    m.products.splice(body, 1)
   }
-  return model
+  return m
 }
 
-render("#app", view, update, {
-  boldText: "Bold Text",
-  btnText: "Click me",
-  clicked: 0
+f.render("#app", view, update, {
+  number: 0,
+  products: []
 })
