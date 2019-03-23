@@ -1,5 +1,5 @@
 {
-  "name": "sr-fjs",
+  "name": "@stomprocket/f",
   "version": "0.1.0",
   "description": "functional frontend lib",
   "main": "src/f.js",
@@ -7,9 +7,13 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build --base /f --title f.js -d docs"
   },
   "devDependencies": {
+    "docz": "^1.0.0-rc.3",
+    "docz-theme-default": "^1.0.0-rc.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   }
