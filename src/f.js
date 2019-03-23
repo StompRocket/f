@@ -64,6 +64,7 @@ function attr(e) {
   }
 }
 
+
 export const div   = elem('div')
 export const a     = elem('a')
 export const i     = elem('i')
@@ -71,15 +72,45 @@ export const b     = elem('b')
 export const p     = elem('p')
 export const span  = elem('span')
 export const btn   = elem('button')
+export const input = elem('input')
+
+export const h1 = elem('h1')
+export const h2 = elem('h2')
+export const h3 = elem('h3')
+export const h4 = elem('h4')
+export const h5 = elem('h5')
+export const h6 = elem('h6')
 
 export const classList = attr('class')
 export const idList = attr('id')
+export const type = attr('type')
+export function value(v) {
+  return function(r, o, model, h) {
+    o.value = v
+    return o
+  }
+}
+
+export function onInput(event) {
+  return function(renderFactory, element, model, handler) {
+    element.addEventListener("input", e => {
+      console.log('Updated', e.target.value)
+      let newmodel = handler(event, model, e.target.value)
+      console.log(newmodel)
+      //if (newmodel !== model)
+        renderFactory(newmodel)
+      e.target.focus()
+    })
+    return element
+  }
+}
 
 export function onClick(event, body) {
   return function(renderFactory, element, model, handler) {
     element.addEventListener("click", () => {
       let newmodel = handler(event, model, body)
-      renderFactory(newmodel)
+      //if (newmodel !== model)
+        renderFactory(newmodel)
     })
     return element
   }
