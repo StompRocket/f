@@ -12,8 +12,6 @@
     "docz:build": "docz build --base /f --title f.js -d docs"
   },
   "devDependencies": {
-    "docz": "^1.0.0-rc.3",
-    "docz-theme-default": "^1.0.0-rc.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   }
