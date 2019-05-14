@@ -1,12 +1,20 @@
+import { diff } from './diff'
+
 const debug = a => ''
 
-export function render(element, htmlObject, handler, model) {
+export function render(element, htmlObject, handler, model, old = null) {
+  let rendered = htmlObject(model)(f, handler, model)
+
   function f(c) {
-    render(element, htmlObject, handler, c)
+    render(element, htmlObject, handler, c, rendered)
   }
   let e = document.querySelector(element)
-  e.innerHTML = ''
-  e.appendChild(htmlObject(model)(f, handler, model))
+  if (!old) {
+    e.innerHTML = ''
+    e.appendChild(rendered)
+  } else {
+    diff(e, rendered, old)
+  }
 }
 
 function orStr(e) {
@@ -23,23 +31,17 @@ function orStr(e) {
 function elem(e) {
   return function() {
     var attrs = Array.prototype.slice.call(arguments, 0);
-    return function() {
+    return function(...body) {
       var body = Array.prototype.slice.call(arguments, 0);
       if (arguments[0] instanceof Array) {
         body = arguments[0]
       }
 
       return function(renderFactory, handler, model) {
-        debug(body, attrs, model)
         let element = document.createElement(e)
-        debug("about to apply handler")
-        debug(handler('Event', model))
-        debug("applied handler")
 
         body.forEach(el => {
-          debug("El", el)
           let e = orStr(el)(renderFactory, handler, model)
-          debug("Adding", e)
           element.appendChild(e)
         })
 
@@ -74,16 +76,16 @@ export const span  = elem('span')
 export const btn   = elem('button')
 export const input = elem('input')
 
-export const h1 = elem('h1')
-export const h2 = elem('h2')
-export const h3 = elem('h3')
-export const h4 = elem('h4')
-export const h5 = elem('h5')
-export const h6 = elem('h6')
+export const h1    = elem('h1')
+export const h2    = elem('h2')
+export const h3    = elem('h3')
+export const h4    = elem('h4')
+export const h5    = elem('h5')
+export const h6    = elem('h6')
 
 export const classList = attr('class')
-export const idList = attr('id')
-export const type = attr('type')
+export const idList    = attr('id')
+export const type      = attr('type')
 export function value(v) {
   return function(r, o, model, h) {
     o.value = v

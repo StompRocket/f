@@ -8,11 +8,12 @@
   "private": false,
   "scripts": {
     "build": "webpack",
+    "start": "webpack --watch",
     "docz:dev": "docz dev",
     "docz:build": "docz build --base /f --title f.js -d docs"
   },
   "devDependencies": {
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
   }
 }
